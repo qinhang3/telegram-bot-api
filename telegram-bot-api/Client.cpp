@@ -4335,9 +4335,8 @@ void Client::on_update_authorization_state() {
   CHECK(authorization_state_ != nullptr);
   switch (authorization_state_->get_id()) {
     case td_api::authorizationStateWaitTdlibParameters::ID: {
-      send_request(
-          make_object<td_api::setOption>("ignore_inline_thumbnails", make_object<td_api::optionValueBoolean>(true)),
-          td::make_unique<TdOnOkCallback>());
+      send_request(make_object<td_api::addProxy>(std::getenv("TELEGRAM_API_SOCKS5_HOST"), std::atoi(std::getenv("TELEGRAM_API_SOCKS5_PORT")), true, make_object<td_api::proxyTypeSocks5>()), td::make_unique<TdOnOkCallback>());
+      send_request(make_object<td_api::setOption>("ignore_inline_thumbnails", make_object<td_api::optionValueBoolean>(true)),td::make_unique<TdOnOkCallback>());
       send_request(make_object<td_api::setOption>("reuse_uploaded_photos_by_hash",
                                                   make_object<td_api::optionValueBoolean>(true)),
                    td::make_unique<TdOnOkCallback>());
